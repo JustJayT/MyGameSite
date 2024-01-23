@@ -1,0 +1,148 @@
+{% extends 'layout.html' %}
+{% set title="Home" %}
+{% block styles %}
+    <link href='{{url_for("static", filename="stylesheets/home.css")}}' rel='stylesheet'/>
+    <link href='{{url_for("static", filename="stylesheets/layout.css")}}' rel='stylesheet'/>
+{% endblock %}
+
+{% block content %}
+<!-- Update this block to update what html content is rendered -->
+<div class="top">
+  <div class="image-container">
+    <p class="wizfont"> Test your Wizard typing skills! </p>
+    </div>
+  <div class="image-container-center">
+  </div>
+  <div class="image-container">
+    <p class="wizfont2"> Made by Wizards, For Wizards! </p>
+  </div>
+
+  <!-- <h2 class="description"> Made by cool people now</h2> ILL FIX THIS LATER PLEASE-->
+</div>
+
+<div class="bottom">
+    
+
+<div class="test">
+    <div class="explanation">
+    <h5><legend class="biginstruc">Instructions</legend></h5>
+    <p class="instruction"> Pick a test, any test! Type as many words as you can under 30 seconds! Use the Shift Key to skip a tough word, and hit Esc to end the test early!
+    See your words per minute, and aim for a super high score. Regular typing tests can improve your speed and accuracy, so take as many as you can! Good luck Wizards! </p>
+    </div>
+    <div class="testlist d-flex flex-column">
+      <div class="testrowtop p-2 flex-row">
+        <div class="testname"> Easy : 4 Characters </div>
+        <span onclick="transitionToPage('testeasy')"><button id="start" type="button" class="glow btn btn-dark" onclick="gameOn()">Start</button></span>
+      </div>
+      <div class="testrow p-2">
+        <div class="testname"> Medium : 7 Characters </div>
+        <span onclick="transitionToPage('testmedium')"><button id="start" type="button" class="glow btn btn-dark" onclick="gameOn()">Start</button></span>
+      </div>
+      <div class="testrow p-2">
+        <div class="testname"> Hard : 9 Characters </div>
+        <span onclick="transitionToPage('testhard')"><button id="start" type="button" class="glow btn btn-dark" onclick="gameOn()">Start</button></span>
+      </div>
+    </div>
+  </div>
+  <div class="widget">
+    <div class="bonustitle">
+      <h5><legend class="biginstruc2">Bonus Games</legend></h5>
+    </div>   
+      <div class="bonuspoptop">
+        <div class="bonusl">
+        <h2>Wizard Attack!</h2>
+        <a href = "typegame"><button id="start" type="button" class="glow btn btn-dark">Start</button></a>
+        </div>
+        <div class="bonusr">
+        <p class="bonusdesc">Stop the bubbles from taking over! Type the word inside to pop them, and last for as long as you possibly can! </p>
+        </div>
+      </div>
+      <div class="bonuspop">
+        <div class="bonusl">
+        <h2>Sentence Type</h2>
+        <a href="paragraph"><button id="start" type="button" class="glow btn btn-dark">Start</button></a>
+      </div>
+        <div class="bonusr">
+        <p class="bonusdesc">When the countdown is complete, type the sentence above as quickly as you can while making as few mistakes as possible.</p>
+        </div>
+        
+      </div>
+  
+  </div>
+
+</div>
+</div>
+
+
+{% endblock %}
+{% block brand %} active-bar {% endblock %}
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+    const imageContainer = document.querySelector(".image-container-center");
+    const wizFont = document.querySelector(".wizfont");
+    const wizFont2 = document.querySelector(".wizfont2");
+    const darkmodetext = document.querySelector(".darkmodetext");
+    const navbar = document.getElementById("navbar");
+    
+    // Function to set dark mode styles
+    function enableDarkMode() {
+        document.body.style.backgroundImage = "url('/static/img/darkbackground.png')";
+        imageContainer.classList.add("dark-image-container-center");
+        wizFont.classList.add("wizfontdark");
+        wizFont2.classList.add("wizfontdark2");
+        navbar.classList.remove("navbar-light");
+        navbar.classList.add("navbar-dark");
+        darkmodetext.classList.add("darkmodetext2");
+        // Save dark mode preference to localStorage
+        localStorage.setItem("darkModeEnabled", "true");
+    }
+
+    // Function to set light mode styles
+    function disableDarkMode() {
+        document.body.style.backgroundImage = "url('/static/img/background.png')";
+        imageContainer.classList.remove("dark-image-container-center");
+        wizFont.classList.remove("wizfontdark");
+        wizFont2.classList.remove("wizfontdark2");
+        navbar.classList.remove("navbar-dark");
+        navbar.classList.add("navbar-light");
+        darkmodetext.classList.remove("darkmodetext2");
+        // Save light mode preference to localStorage
+        localStorage.setItem("darkModeEnabled", "false");
+    }
+
+    // Event listener for dark mode toggle change
+    darkModeToggle.addEventListener("change", () => {
+        if (darkModeToggle.checked) {
+            enableDarkMode();
+        } else {
+            disableDarkMode();
+        }
+    });
+
+    // Function to apply navbar styles based on dark mode preference
+    function applyNavbarStyles(isDarkMode) {
+        if (isDarkMode) {
+            navbar.classList.remove("navbar-light");
+            navbar.classList.add("navbar-dark");
+        } else {
+            navbar.classList.remove("navbar-dark");
+            navbar.classList.add("navbar-light");
+        }
+    }
+
+    // Check and apply dark mode setting from localStorage on page load
+    const isDarkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
+    if (isDarkModeEnabled) {
+        darkModeToggle.checked = true;
+        enableDarkMode(); 
+        applyNavbarStyles(true); 
+    } else {
+        disableDarkMode(); 
+        applyNavbarStyles(false); 
+    }
+});
+</script>
+<!-- Delete the scripts block if not needed -->
+{% endblock %}

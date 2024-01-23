@@ -1,0 +1,323 @@
+.title {
+  width: 40vh;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 10px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.instruction {
+  font-size: 1.3vw;
+  margin: 12px;
+}
+
+.biginstruc {
+  font-size: 2.5rem;
+  margin-top: 15px;
+}
+
+.biginstruc2 {
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.top {
+  background-color: transparent;
+  height: 37vh;
+  text-align: center;
+  border-style: solid;
+  border-color: transparent;
+
+  display: flex;
+}
+
+.top img {
+  width: 50%;
+  height: auto;
+}
+
+.bottom {
+  background-color: transparent;
+  display: flex;
+  height: 55vh;
+  max-width: 98vw;
+  margin: auto;
+  justify-content: center;
+}
+
+.description {
+  width: 30vh;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 10px;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+
+.class {
+  background-color: #cae3ec;
+  height: 50vh;
+  text-align: center;
+  margin: 0 auto;
+  top: 70px;
+  width: 50vh;
+  display: flex;
+  justify-content: center;
+  border-style: solid;
+  border-color: black;
+  border-radius: 10px;
+}
+
+.difficulty {
+  height: 10vh;
+}
+
+.form {
+  height: 30vh;
+}
+
+.widget {
+  height: 50vh;
+  background-color: #4a8ca2;
+  margin: 15px;
+  padding: 5px;
+  padding-top: 1vh;
+  width: 32%;
+  min-width: 300px;
+  border-style: inset;
+  border-width: 15px;
+  border-color: #cae3ec;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  justify-content: center;
+}
+
+.test {
+  height: 50vh;
+  background-color: #4a8ca2;
+  margin: 15px;
+  padding-top: 0.75%;
+  width: 61%;
+  min-width: 300px;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  border-style: inset;
+  border-width: 15px;
+  border-color:#cae3ec;
+}
+
+#start {
+  width: 90%;
+  background-color: #4a8ca2;
+}
+
+.glow {
+  width: 90%;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #4a8ca2;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+}
+
+.glow:before {
+  content: '';
+  background: linear-gradient(45deg, #cae3ec, #4a8ca2, #cae3ec, #cae3ec, #4a8ca2, #cae3ec, #cae3ec, #4a8ca2, #cae3ec);
+  position: absolute;
+  top: -2px;
+  left:-2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  border-radius: 0.25rem;
+}
+
+.glow:active {
+  color: #4a8ca2
+}
+
+.glow:active:after {
+  background: transparent;
+}
+
+.glow:hover:before {
+  opacity: 1;
+}
+
+.glow:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #4a8ca2;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+.typing {
+  height: 78%;
+  background-color: lightblue;
+  margin: 14px;
+  padding: 20px;
+  padding-top: 1vh;
+  width: 66%;
+  text-align: center;
+  border-radius: 15px;
+  justify-content: center;
+  opacity: 0.9;
+}
+
+.bank {
+  height: 78%;
+  background-color: lightblue;
+  margin: 14px;
+  padding: 5px;
+  padding-top: 0px;
+  width: 32%;
+  text-align: center;
+  border-radius: 15px;
+  justify-content: center;
+  opacity: 0.9;
+  float: right;
+}
+
+.toptest {
+  background-color: lightblue;
+  height: 9%;
+  text-align: center;
+  border-style: solid;
+  border-color: transparent;
+  position: absolute;
+  display: flex;
+  margin-top: 0.7%;
+  border-radius: 15px;
+  width: 61%;
+}
+
+.bottomtest {
+  background-color: transparent;
+  display: flex;
+  height: 46%;
+  width: 63%;
+  margin: auto;
+  position: absolute;
+  margin-top: 4.9%;
+}
+
+.testlabel {
+  margin-left: 33%;
+  margin-top: 0.7%;
+}
+
+.explanation {
+  background-color: #cae3ec;
+  border-radius: 15px;
+  width: 50%;
+  float: left;
+  border-style: solid;
+  border-color: #4a8ca2;
+  margin: 10px;
+  margin-top: -2px;
+}
+
+.testlist {
+  width: 50%;
+  float: right;
+  height: 98%;
+}
+
+.testname {
+  font-size: 2vw;
+  margin-top: -5px;
+}
+.testrow {
+  height: 30%;
+  background-color: #cae3ec;
+  border-radius: 15px;
+  margin-top: 10px;
+  margin-right: 15px;
+}
+
+.testrowtop {
+  height: 30%;
+  background-color: #cae3ec;
+  border-radius: 15px;
+  margin-top: 0px;
+  margin-right: 15px;
+}
+.bonuspara {
+  height: 40%;
+  background-color: #cae3ec;
+  margin: 10px;
+  border: 15px;
+}
+
+h2 {
+  font-size: 1.8rem;
+}
+
+.bonuspoptop {
+  height: 38%;
+  background-color: #cae3ec;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 0px;
+  border: 15px;
+  display: flex;
+  border-radius: 15px;
+}
+
+.bonuspop {
+  height: 38%;
+  background-color: #cae3ec;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  border: 15px;
+  display: flex;
+  border-radius: 15px;
+}
+
+.bonusdesc{
+  margin: 10px;
+  font-size: 1vw;
+}
+
+.bonusl {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.bonusr {
+  width: 50%;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}

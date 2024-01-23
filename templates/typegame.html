@@ -1,0 +1,266 @@
+{% extends 'layout.html' %}
+{% set title="Typing game" %}
+{% block styles %}
+    <link href='{{url_for("static", filename="stylesheets/typegame.css")}}' rel='stylesheet'/>
+    <link href='{{url_for("static", filename="stylesheets/layout.css")}}' rel='stylesheet'/>
+{% endblock %}
+{% block e %} active-bar {% endblock %}
+{% block content %}
+<body>
+  <div class="outer">
+      <div id="bubbles-box">
+        <div id="game-container"><button id="start" class="glow btn btn-dark" type="button" onclick="startCountdown()">Click to start game!</button></div>
+      </div>
+  
+      <div class="inputs">
+        <div class="rowboard">
+          <div class="scoreboard">
+            <div class="scorelabel"><p>Score:</p> <span id="word-count" class="h3 text-center">0</span></div>
+          </div>
+          <div class="scoreboard">
+            <div class="scorelabel"><p>Time Left:</p><span id="timer">45s</span></div>
+          </div>
+        </div>
+        <input type="text" id="typing-bar" placeholder="Type here">
+      </div>
+    </div>
+  
+    <div id="game-over">
+      <p>Game Over!</p>
+      <p id="wpm">Words Per Minute: 0</p>
+      <p id="final-count">Words Typed: 0</p>
+      <button id="play-again" class="glow btn btn-dark" onclick="resetGame()">Play Again</button>
+    </div>
+  </body>
+  
+  <script>
+    const start = document.getElementById('start');
+    const gameContainer = document.getElementById('game-container');
+    const typingBar = document.getElementById('typing-bar');
+    const timerElement = document.getElementById('timer');
+    const gameOverElement = document.getElementById('game-over');
+    const wpmElement = document.getElementById('wpm');
+    const finalCount = document.getElementById('final-count');
+    const wordCountElement = document.getElementById('word-count');
+    const playAgainButton = document.getElementById('play-again');
+    const words = ['magic', 'spell', 'wizard', 'fantasy', 'enchant', 'dragon', 'castle', 'adventure', 'sorcerer', 'potions', 'mythical', 'alchemy', 'creatures', 'realm', 'mystical', 'cursed', 'quest', 'phoenix', 'mage', 'medieval', 'scroll', 'fairy', 'unicorn', 'mermaid', 'goblin', 'warlock'];
+
+    let timerSeconds = 45;
+    let timerInterval;
+    let wordsTyped = 0;
+    let startTime;
+    let gameActive = false;
+
+    let countdown = 3; 
+
+    function startCountdown() {
+    start.style.display = 'none';
+    
+    updateCountdown();
+  
+    const countdownInterval = setInterval(updateCountdown, 1000);
+  
+    function updateCountdown() {
+      if (countdown > 0) {
+        gameContainer.innerHTML = `<h1>${countdown}</h1>`;
+        countdown--;
+      } else {
+        clearInterval(countdownInterval);
+        gameActive = true;
+        gameContainer.classList.remove('hidden');
+        typingBar.removeAttribute('disabled');
+        gameContainer.innerHTML = '';
+        startGame();
+      }
+    }
+  }
+
+
+
+  function createBubble() {
+      if (!gameActive || document.querySelectorAll('.bubble').length >= 10) return;
+
+      const bubble = document.createElement('div');
+      bubble.classList.add('bubble');
+      const boxWidth = gameContainer.offsetWidth - 80;
+      const boxHeight = gameContainer.offsetHeight - 80;
+      bubble.style.top = `${Math.random() * boxHeight}px`;
+      bubble.style.left = `${Math.random() * boxWidth}px`;
+      const randomWord = words[Math.floor(Math.random() * words.length)];
+      bubble.innerText = randomWord;
+
+      gameContainer.appendChild(bubble);
+    }
+
+function updateGame() {
+      createBubble();
+      setTimeout(updateGame, 3000);
+    }
+
+function updateTimer() {
+  if (gameActive) { 
+    const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+    const remainingSeconds = Math.max(timerSeconds - elapsedSeconds, 0);
+    timerElement.textContent = `${remainingSeconds}s`;
+
+    if (remainingSeconds === 0) {
+      clearInterval(timerInterval);
+      endGame();
+    }
+  }
+}
+
+
+    function endGame() {
+      const wordsPerMinute = Math.round((wordsTyped / 30) * 60);
+      wpmElement.textContent = `Words Per Minute: ${wordsPerMinute}`;
+      finalCount.textContent = `Words Typed: ${wordsTyped}`;
+      gameOverElement.style.display = 'block';
+      gameActive = false;
+    }
+
+    function resetGame() {
+    timerSeconds = 45;
+    wordsTyped = 0;
+    startTime = null;
+    timerElement.textContent = `${timerSeconds}s`;
+    clearInterval(timerInterval);
+    gameActive = false;
+
+    const bubbles = document.querySelectorAll('.bubble');
+    bubbles.forEach((bubble) => bubble.remove());
+
+    countdown = 3;
+    startCountdown();
+    gameOverElement.style.display = 'none';
+    wordCountElement.textContent = wordsTyped;
+    typingBar.value = '';
+  }
+
+  function resetSpecificBubble(word) {
+      const bubbles = document.querySelectorAll('.bubble');
+      bubbles.forEach((bubble) => {
+        const bubbleText = bubble.innerText.toLowerCase();
+        if (bubbleText === word) {
+          bubble.remove();
+          createBubble();
+        }
+      });
+    }
+
+    typingBar.addEventListener('input', (event) => {
+      if (gameActive) {
+        const inputValue = event.target.value.toLowerCase();
+        const bubbles = document.querySelectorAll('.bubble');
+
+        bubbles.forEach((bubble) => {
+          if (bubble.style.display !== 'none') {
+            const bubbleText = bubble.innerText.toLowerCase();
+
+            if (inputValue === bubbleText) {
+              bubble.style.display = 'none';
+              wordsTyped++;
+              document.getElementById('word-count').textContent = wordsTyped;
+              typingBar.value = ''; 
+              resetSpecificBubble(bubbleText);
+            }
+          }
+        });
+      } else {
+        typingBar.value = '';
+      }
+    });
+
+
+
+
+    function startGame() {
+      startTime = Date.now();
+      timerInterval = setInterval(updateTimer, 1000);
+      updateGame();
+    }
+
+    function resetBubbles() {
+      const bubbles = document.querySelectorAll('.bubble');
+      bubbles.forEach((bubble) => bubble.remove());
+      updateGame();
+    }
+
+    typingBar.addEventListener('input', (event) => {
+      const inputValue = event.target.value.toLowerCase();
+      const bubbles = document.querySelectorAll('.bubble');
+
+      bubbles.forEach((bubble) => {
+        const bubbleText = bubble.innerText.toLowerCase();
+
+        if (inputValue === bubbleText) {
+          bubble.style.display = 'none';
+          wordsTyped++;
+          document.getElementById('word-count').textContent = wordsTyped;
+          typingBar.value = '';
+        }
+      });
+    });
+    
+        
+    // Darkmode Script!
+    document.addEventListener("DOMContentLoaded", function() {
+        const darkModeToggle = document.getElementById("dark-mode-toggle");
+        const navbar = document.getElementById("navbar");
+        const darkmodetext = document.querySelector(".darkmodetext");
+      
+        // Function to set dark mode styles
+        function enableDarkMode() {
+            document.body.style.backgroundImage = "url('/static/img/darkbackground.png')";
+            navbar.classList.remove("navbar-light");
+            navbar.classList.add("navbar-dark");
+            darkmodetext.classList.add("darkmodetext2");
+            // Save dark mode preference to localStorage
+            localStorage.setItem("darkModeEnabled", "true");
+        }
+      
+        // Function to set light mode styles
+        function disableDarkMode() {
+            document.body.style.backgroundImage = "url('/static/img/background.png')";
+            navbar.classList.remove("navbar-dark");
+            navbar.classList.add("navbar-light");
+            darkmodetext.classList.remove("darkmodetext2");
+            // Save light mode preference to localStorage
+            localStorage.setItem("darkModeEnabled", "false");
+        }
+      
+        // Event listener for dark mode toggle change
+        darkModeToggle.addEventListener("change", () => {
+            if (darkModeToggle.checked) {
+                // Enable dark mode
+                enableDarkMode();
+            } else {
+                // Disable dark mode
+                disableDarkMode();
+            }
+        });
+      
+        // Function to apply navbar styles based on dark mode preference
+        function applyNavbarStyles(isDarkMode) {
+            if (isDarkMode) {
+                navbar.classList.remove("navbar-light");
+                navbar.classList.add("navbar-dark");
+            } else {
+                navbar.classList.remove("navbar-dark");
+                navbar.classList.add("navbar-light");
+            }
+        }
+      
+        // Check and apply dark mode setting from localStorage on page load
+        const isDarkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
+        if (isDarkModeEnabled) {
+            darkModeToggle.checked = true;
+            enableDarkMode(); // Apply dark mode styles if enabled in localStorage
+            applyNavbarStyles(true); // Apply navbar styles based on dark mode preference
+        } else {
+            disableDarkMode(); // Apply light mode styles by default
+            applyNavbarStyles(false); // Apply navbar styles based on light mode preference
+        }
+      });
+      </script>  
+{% endblock %}

@@ -1,0 +1,228 @@
+form {
+  width: 90%;
+  margin: auto;
+}
+
+textarea {
+  width: 90%;
+  margin: auto;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  border: 5px solid white;
+}
+
+#stats {
+  width: 90%;
+  margin: auto;
+  background-color: #4A8CA2;
+  padding: 20px;
+  border-radius: 15px;
+  border: 5px solid #4A8CA2;
+  height: 30vh;
+}
+
+.game-container {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 24px;
+}
+
+.word-display {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.current-word {
+  margin-right: 20px;
+  font-size: 4.5rem;
+}
+
+.next-word {
+  font-size: 2.5rem;
+}
+
+.outer {
+  width: 90%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.inner {
+  height: 28vh;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+}
+
+.inputs {
+  width: fit-content;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 5vh auto;
+  width: 42%;
+  background-color: #4a8ca2;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  margin: 5px 0;
+}
+
+.key {
+  width: 3.7vw; 
+  height: 4vw; 
+  border: 1px solid #000;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  background-color: gray;
+  font-size: 2.3vw; 
+}
+
+.lit {
+background-color: white;
+}
+
+.rowboard {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+}
+.scoreboard {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+}
+.scorelabel {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#score {
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 33%;
+}
+
+#timer {
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 40%;
+}
+
+#skipCount {
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 40%;
+}
+
+.timer {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+}
+
+#gameOver {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+#retry {
+  font-size: 30px;
+  font-weight: bold;
+  background-color: #4A8CA2;
+  border: transparent;
+  border-radius: 5px;
+}
+
+#retry:hover {
+  box-shadow: #000;
+}
+#aretry {
+  color: white;
+}
+
+#aretry:hover {
+  text-decoration: none;
+  color: #a6c5e4;
+}
+
+#inputField {
+  border: none;
+  border-bottom: 2px solid #375a7f;
+  background-color: transparent;
+  outline: none;
+  color: #375a7f; 
+  font-size: 16px;
+  padding: 5px; 
+  width: 200px; 
+  z-index: 1;
+  position: absolute;
+  opacity: 0;
+}
+
+#inputField::placeholder {
+  color: #a6c5e4; 
+}
+
+#typedWord {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 4vh;
+  height: 1vh;
+}
+
+#typedWord span {
+  color: red;
+}
+
+#underline {
+  display: flex;
+  justify-content: center;
+  width: 42vh;
+  background-color: #000;
+  height: 4px;
+  margin-top: 2.44%;
+  position: absolute;
+}
+
+.wordTyped {
+  font-size: 4vh;
+}
+
+#typeHere {
+  display: flex;
+  margin-top: -10%;
+  font-size: 1.2rem;
+}

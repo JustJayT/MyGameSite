@@ -1,0 +1,39 @@
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    text-align: center;
+    margin: 20px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+p {
+    margin: 5px 0;
+}
+
+#quote-source {
+    font-style: italic;
+    margin-top: 10px;
+}
+
+#race-container {
+  height: 50%;
+  background-color: #cae3ec;
+  margin: auto;
+  padding: 5px;
+  width: 44%;
+  margin-top: 3%;
+  border-radius: 15px;
+  font-weight: 500;
+}
+
+button {
+    display: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+}

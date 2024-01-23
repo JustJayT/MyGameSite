@@ -1,0 +1,160 @@
+<!doctype html>
+<!--
+  ### Important ###
+  This file is the parent template for the entire application.
+  Do not make changes to this file unless you intend for those 
+  changes to apply to every template that inherits this template.
+-->
+<html>
+    <head>
+        <link rel="icon" type="image/png" href="/static/img/favicon.ico">
+        <!-- Quite possibly super important stuff, no clue lmaoooo -->
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie-edge">
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <link rel ="stylesheet" href="{{url_for('static', filename='stylesheets/layout.css')}}">
+        <script src="https://www.gstatic.com/charts/loader.js"></script>
+        <script>
+          google.charts.load('current', {packages: ['corechart']}); 
+          google.charts.setOnLoadCallback(drawChart);
+          // I guess stuff goes here? Not sure whattt ;p
+        </script>
+        <!-- This connects to Google for Fonts, add more fonts underneath here if needed -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Suez+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Oxygen:wght@300&display=swap" rel="stylesheet">
+        <!-- ^ ^ More fonts above this ^ ^-->
+        <title>
+          {% if title %}
+            {{ title }}
+          {% else %}
+            Cool Starting Template 
+          {% endif %}
+        </title>
+        <!-- For adding any additional stylesheets to a template -->
+        {% block styles %}
+        {% endblock %}
+    </head>
+    <div class="background-container">
+      <div class="background-animation">
+      </div>
+    <div> 
+      <!-- my crappy lil navbar, copy pasted from navbar website and modified -->
+      <nav class="navbar navbar-expand-lg navbar-light" id="navbar" style="background-color: rgba(74, 140, 162);">
+        <a class="navbar-brand"><button class="navbar-brand navbar-toggler order-2" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button></a>
+      
+        <div class="collapse navbar-collapse" id="navbarNav">
+          
+          
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <span class="nav-link {% block brand %}{% endblock %}" onclick="transitionToPage('/')">Home</span>
+            </l>
+            <li class="nav-item">
+              <span class="nav-link {% block b %}{% endblock %}" onclick="transitionToPage('stats')">Statistics</span>
+            </li>
+            <li class="nav-item">
+              <span class="nav-link {% block c %}{% endblock %}" onclick="transitionToPage('typing')">Intro To Typing</span>
+            </li>
+            <li class="nav-item">
+              <span class="nav-link {% block d %}{% endblock %}" onclick="transitionToPage('about')">About Us</span>
+            </li>
+            <li class="nav-item">
+              <span class="nav-link {% block e %}{% endblock %}" onclick="transitionToPage('login')">Account</span>
+            </li>
+          </ul>
+          <ul class = "nav navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+              <span> <text class="darkmodetext"> Dark Mode </text>
+              <label class="switch">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="slider"></span>
+              </label>
+              </span>
+            </li></ul>
+            
+        </div>
+      </nav>
+      <div id="includedContent"></div>
+      
+      <body id="content"></body>
+        {% block content %}
+        {% endblock %}
+
+        {% block scripts %}
+        
+        {% endblock %}
+        <script>
+window.transitionToPage = function(href) {
+    document.querySelector('body').style.opacity = 0
+    setTimeout(function() { 
+        window.location.href = href
+    }, 500)
+}
+
+document.addEventListener('DOMContentLoaded', function(event) {
+    document.querySelector('body').style.opacity = 1
+})
+
+document.addEventListener("DOMContentLoaded", function() {
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+    const navbar = document.getElementById("navbar");
+    const navlink = document.getElementById("navlink");
+    const activebar = document.querySelector(".active-bar");
+   function enableDarkMode() {
+        document.body.style.backgroundImage = "url('/static/img/darkbackground.png')";
+        navbar.classList.remove("navbar-light");
+        navbar.classList.add("navbar-dark");
+        activebar.style.backgroundColor = '#172a55';
+        localStorage.setItem("darkModeEnabled", "true");
+    }
+
+    function disableDarkMode() {
+        document.body.style.backgroundImage = "url('/static/img/background.png')";
+        activebar.style.backgroundColor = '#b0d7e5';
+        navbar.classList.remove("navbar-dark");
+        navbar.classList.add("navbar-light");
+        localStorage.setItem("darkModeEnabled", "false");
+    }
+
+    darkModeToggle.addEventListener("change", () => {
+        if (darkModeToggle.checked) {
+            enableDarkMode();
+        } else {
+            disableDarkMode();
+        }
+    });
+
+    function applyNavbarStyles(isDarkMode) {
+        if (isDarkMode) {
+          navlink.classList.remove("active-bar");
+          navlink.classList.add("active-bar-dark");
+          navbar.classList.remove("navbar-light");
+          navbar.classList.add("navbar-dark");
+        } else {
+          navbar.classList.remove("navbar-dark");
+          navbar.classList.add("navbar-light");
+          navlink.classList.remove("active-bar-dark");
+          navlink.classList.add("active-bar");
+        }
+    }
+
+    const isDarkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
+    if (isDarkModeEnabled) {
+        darkModeToggle.checked = true;
+        enableDarkMode(); 
+        applyNavbarStyles(true); 
+    } else {
+        disableDarkMode(); 
+        applyNavbarStyles(false); 
+    }
+});
+        </script>
+    </body>
+</html>

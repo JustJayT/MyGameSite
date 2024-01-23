@@ -1,0 +1,289 @@
+{% extends "layout.html" %} {% block styles %}
+<link
+  href='{{url_for("static", filename="stylesheets/stats.css")}}'
+  rel="stylesheet"
+/>
+<link
+  href='{{url_for("static", filename="stylesheets/layout.css")}}'
+  rel="stylesheet"
+/>
+{% endblock %} {% set title="Statistics" %} 
+
+{% block content %}
+<body>
+  <h1>Typing Statistics</h1>
+  <div class="stats-container">
+    <div class="stats-section">
+      <div class="stat">
+        <strong>Average Words per Minute (WPM):</strong> <span id="averageWPM">No WPM recorded!</span>
+      </div>
+      <div class="stat">
+        <strong>Top WPM:</strong> <span id="topWPM">No WPM recorded!</span>
+      </div>
+      <div class="stat">
+        <strong>Easy Tests taken:</strong>
+        <span id="easyCount">No tests recorded!</span>
+      </div>
+      <div class="stat">
+        <strong>Medium Tests taken:</strong> <span id="mediumCount">No tests recorded!</span>
+      </div>
+      <div class="stat">
+        <strong>Hard Tests taken:</strong> <span id="hardCount">No tests recorded!</span>
+      </div>
+    </div>
+
+    <div class="recent-tests">
+      
+      <h2>Recent Tests</h2>
+      {% include 'recent_results.html' %}
+    </div>
+
+    <div class="charts-section">
+      <div class="chart">
+        <div id="chart1">Words</div>
+      </div>
+      <div class="chart">
+        <div id="chart2"></div>
+      </div>
+      <div class="chart">
+        <div style="text-align: center; margin-bottom: 10px; font-size: 18px;">WPM</div>
+        <div id="wpmChartContainer"></div>
+      </div>
+    </div>
+  </div>
+
+ 
+</body>
+{% endblock %}
+{% block b %} active-bar {% endblock%} 
+{% block scripts %}
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  function updateTestCounts() {
+      $.get('/get_test_counts', function(data) {
+          $('#easyCount').text(data.easy_count);
+          $('#mediumCount').text(data.medium_count);
+          $('#hardCount').text(data.hard_count);
+      });
+  }
+  
+  updateTestCounts();
+  setInterval(updateTestCounts, 5000);
+  </script>
+<script>
+  function updateTopWPM() {
+      $.get('/get_top_wpm', function(data) {
+          $('#topWPM').text(data.top_wpm || 'No tests recorded yet');
+      });
+  }
+  
+  updateTopWPM();
+  setInterval(updateTopWPM, 5000);
+</script>
+  
+<script>
+  $(document).ready(function() {
+      function updateTestCount() {
+          $.get('/test_count_json', function(data) {
+              $('#total_tests').text('Total Tests: ' + data.total_tests);
+          });
+      }
+
+      updateTestCount();
+
+      setInterval(updateTestCount, 5000);  
+  });
+</script>
+<script>
+        function updateAverageWPM() {
+            $.get('/get_average_wpm', function(data) {
+                $('#averageWPM').text(data.average_wpm.toFixed(2));
+            });
+        }
+
+        updateAverageWPM();
+document.addEventListener("DOMContentLoaded", function() {
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+    const navbar = document.getElementById("navbar");
+    const darkmodetext = document.querySelector(".darkmodetext");
+  
+    function enableDarkMode() {
+        document.body.style.backgroundImage = "url('/static/img/darkbackground.png')";
+        navbar.classList.remove("navbar-light");
+        navbar.classList.add("navbar-dark");
+        darkmodetext.classList.add("darkmodetext2");
+        localStorage.setItem("darkModeEnabled", "true");
+    }
+  
+    function disableDarkMode() {
+        document.body.style.backgroundImage = "url('/static/img/background.png')";
+        navbar.classList.remove("navbar-dark");
+        navbar.classList.add("navbar-light");
+        darkmodetext.classList.remove("darkmodetext2");
+        localStorage.setItem("darkModeEnabled", "false");
+    }
+  
+    darkModeToggle.addEventListener("change", () => {
+        if (darkModeToggle.checked) {
+            enableDarkMode();
+        } else {
+            disableDarkMode();
+        }
+    });
+  
+    function applyNavbarStyles(isDarkMode) {
+        if (isDarkMode) {
+            navbar.classList.remove("navbar-light");
+            navbar.classList.add("navbar-dark");
+        } else {
+            navbar.classList.remove("navbar-dark");
+            navbar.classList.add("navbar-light");
+        }
+    }
+  
+    const isDarkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
+    if (isDarkModeEnabled) {
+        darkModeToggle.checked = true;
+        enableDarkMode(); 
+        applyNavbarStyles(true); 
+    } else {
+        disableDarkMode(); 
+        applyNavbarStyles(false);
+    }
+  });
+  google.charts.load("current", { packages: ["corechart"] });
+  google.charts.setOnLoadCallback(chartTime);
+
+  function chartTime() {
+
+    drawCharts();
+    drawWPMChart();
+  }
+
+  function drawCharts() {
+
+    $.get('/get_test_counts', function (data) {
+      var data1 = google.visualization.arrayToDataTable([
+        ["Accuracy Type", "Percentage"],
+        ["None", 70],
+        ["Nobody", 20],
+        ["N/A", 10],
+      ]);
+
+      var options1 = {
+        pieHole: 0.4,
+        pieSliceText: "percentage",
+        slices: {
+          0: { color: "#87CEEB" },
+          1: { color: "#ADD8E6" },
+          2: { color: "#B0E0E6" },
+        },
+      };
+
+      var data2 = google.visualization.arrayToDataTable([
+        ["Difficulty", "Percentage"],
+        ["Easy", data.easy_count],
+        ["Medium", data.medium_count],
+        ["Hard", data.hard_count],
+      ]);
+
+      var options2 = {
+        pieHole: 0.4,
+        pieSliceText: "percentage",
+        slices: {
+          0: { color: "#87CEEB" },
+          1: { color: "#ADD8E6" },
+          2: { color: "#B0E0E6" },
+        },
+      };
+
+      var data3 = google.visualization.arrayToDataTable([
+        ["Test", "WPM"],
+        ["Test 1", 60],
+        ["Test 2", 65],
+        ["Test 3", 70],
+        ["Test 4", 68],
+        ["Test 5", 72],
+      ]);
+
+      var options3 = {
+        curveType: "function",
+        legend: { position: "bottom" },
+        colors: ["#87CEEB"],
+        backgroundColor: "#ffffff",
+        hAxis: {
+          textStyle: { color: "#19547b" },
+          gridlines: { color: "transparent" },
+        },
+        vAxis: {
+          textStyle: { color: "#19547b" },
+          gridlines: { color: "transparent" },
+        },
+      };
+
+      var chart1 = new google.visualization.PieChart(
+        document.getElementById("chart1")
+      );
+      chart1.draw(data1, options1);
+      addTitleAboveChart("Bad Typers", "chart1");
+      var chart2 = new google.visualization.PieChart(
+        document.getElementById("chart2")
+      );
+      chart2.draw(data2, options2);
+      addTitleAboveChart("Tests Taken", "chart2");
+      var chart3 = new google.visualization.LineChart(
+        document.getElementById("chart3")
+      );
+      chart3.draw(data3, options3);
+      addTitleAboveChart("WPM", "chart3");
+    });
+  }
+
+  function drawWPMChart() {
+    async function fetchRecentWPM() {
+      const response = await fetch('/get_recent_wpm');
+      const wpmData = await response.json();
+
+      const chartData = [['*', 'WPM']].concat(
+        Object.entries(wpmData).map(([test, wpm]) => [test, wpm])
+      );
+
+      const options = {
+        curveType: 'function',
+        legend: { position: 'bottom' },
+        colors: ['#87CEEB'],
+        backgroundColor: '#ffffff',
+        hAxis: {
+          textStyle: { color: '#19547b' },
+          gridlines: { color: 'transparent' },
+        },
+        vAxis: {
+          textStyle: { color: '#19547b' },
+          gridlines: { color: 'transparent' },
+        },
+      };
+
+      const chart = new google.visualization.LineChart(
+        document.getElementById('wpmChartContainer')
+      );
+      chart.draw(google.visualization.arrayToDataTable(chartData), options);
+    }
+
+    setInterval(fetchRecentWPM, 30000);
+
+    fetchRecentWPM();
+  }
+
+  function addTitleAboveChart(title, elementId) {
+    var chartElement = document.getElementById(elementId);
+    var titleDiv = document.createElement("div");
+    titleDiv.innerText = title;
+    titleDiv.style.textAlign = "center";
+    titleDiv.style.marginBottom = "10px";
+    titleDiv.style.fontSize = "18px";
+    chartElement.parentElement.insertBefore(titleDiv, chartElement);
+  }
+  </script>
+  {% endblock %}

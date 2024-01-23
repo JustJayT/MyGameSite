@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block styles %}
+<link href='{{url_for("static", filename="stylesheets/404.css")}}' rel='stylesheet'/>
+{% endblock %} 
+{% set title="404" %}
+
+{% block content %}
+<div class="container">
+<h1>Curses! We found a 404 Error!</h1> 
+<p> How did we get here?! Wrong page!</p>
+<div class="img-container">
+<img src="/static/img/wizardrage.png" alt="angry wizard" class="center" width="900" height="550">
+</div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/javascript/darkmode.js">
+</script>
+{% endblock %}
