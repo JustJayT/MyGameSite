@@ -26,7 +26,7 @@ app.register_blueprint(api_bp, url_prefix="/api")
 
 @app.route('/')
 def index():
-    return render_template('home.html')
+    return render_template('index.html')
 
 @app.route('/404')
 def error():
